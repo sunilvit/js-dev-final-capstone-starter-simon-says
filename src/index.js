@@ -79,7 +79,7 @@ startButton.addEventListener("click", startButtonHandler);
  *
  */
 function startButtonHandler() {
-  // TODO: Write your code here.
+  // TODO: Check the usage of below variables
     let roundsNeeded = setLevel()
     let roundCount = 0;
     startButton.classList.add("hidden");
@@ -164,16 +164,16 @@ function setLevel(level = 1) {
  * getRandomItem([1, 2, 3, 4]) //> returns 1
  */
 function getRandomItem(collection) {
-  // if (collection.length === 0) return null;
-  // const randomIndex = Math.floor(Math.random() * collection.length);
-  // return collection[randomIndex];
+    if (collection.length === 0) return null;
+    const randomIndex = Math.floor(Math.random() * collection.length);
+    return collection[randomIndex];
 }
 
 /**
  * Sets the status text of a given HTML element with a given a message
  */
 function setText(element, text) {
-  // TODO: Write your code here.
+  element.innerText = text;
   return element;
 }
 
@@ -191,7 +191,15 @@ function setText(element, text) {
  */
 
 function activatePad(color) {
-  // TODO: Write your code here.
+  let padToActivate = pads.find(item => item.color === color);
+  if (padToActivate) {
+      padToActivate.selector.classList.add("activated");
+      padToActivate.sound.play();
+      setTimeout(() =>
+      {
+          padToActivate.selector.classList.remove("activated")
+      }, 500);
+  }
 }
 
 /**
@@ -209,7 +217,9 @@ function activatePad(color) {
  */
 
 function activatePads(sequence) {
-  // TODO: Write your code here.
+  sequence.forEach((index, item) => {
+      setTimeout(() => { activatePad(item)}, (index+1)*600);
+  })
 }
 
 /**
@@ -237,7 +247,13 @@ function activatePads(sequence) {
  */
  function playComputerTurn() {
   // TODO: Write your code here.
+    let colorSequence = ["red", "green", "blue", "yellow"];
+    padContainer.classList.add("unclickable");
+    setText(statusSpan, "The computer's turn...");
+    setText(heading, `Round ${roundCount} of ${maxRoundCount}`);
 
+    computerSequence.push(getRandomItem(colorSequence));
+    activatePads(computerSequence);
   setTimeout(() => playHumanTurn(roundCount), roundCount * 600 + 1000); // 5
 }
 
